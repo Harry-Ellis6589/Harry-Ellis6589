@@ -1279,7 +1279,6 @@
             max-width: 800px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden;
         }
         
         .special-poem:before {
@@ -1325,23 +1324,31 @@
             font-weight: bold;
         }
         
-        /* Additional decorative elements - ~100 lines */
+        /* Interactive Envelope - ~150 lines */
+        .envelope-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
         .envelope {
             position: relative;
             width: 200px;
             height: 120px;
             background-color: #f8c8dc;
-            margin: 40px auto;
+            margin: 0 auto;
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            z-index: 10;
         }
         
         .envelope:before {
             content: '';
             position: absolute;
             top: 0;
+            left: 0;
             width: 0;
             height: 0;
             border-left: 100px solid transparent;
@@ -1349,8 +1356,8 @@
             border-top: 70px solid #e8a8c8;
             transform-origin: top;
             transform: rotateX(0deg);
-            transition: all 0.3s ease;
-            z-index: 2;
+            transition: all 0.5s ease;
+            z-index: 5;
         }
         
         .envelope.open:before {
@@ -1377,8 +1384,8 @@
             left: 10px;
             top: 10px;
             border-radius: 3px;
-            z-index: 1;
-            transition: all 0.3s ease;
+            z-index: 2;
+            transition: all 0.5s ease;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1389,6 +1396,26 @@
         
         .envelope.open .letter {
             transform: translateY(-60px);
+            z-index: 4;
+        }
+        
+        .envelope-message {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            margin: -50px auto 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.3s;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .envelope.open ~ .envelope-message {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         /* Additional animations - ~100 lines */
@@ -1481,6 +1508,10 @@
             
             .envelope.open .letter {
                 transform: translateY(-40px);
+            }
+            
+            .envelope-message {
+                max-width: 250px;
             }
         }
     </style>
@@ -1661,8 +1692,13 @@
     <section id="interactive-envelope">
         <div class="container">
             <h2>A Special Message</h2>
-            <div class="envelope" id="envelope">
-                <div class="letter">Click Me!</div>
+            <div class="envelope-container">
+                <div class="envelope" id="envelope">
+                    <div class="letter">Click Me!</div>
+                </div>
+                <div class="envelope-message">
+                    <p>Inside this envelope is all my love for you, waiting to be opened and cherished forever.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -2207,6 +2243,7 @@
         
         // Envelope interaction
         const envelope = document.getElementById('envelope');
+        const envelopeMessage = document.querySelector('.envelope-message');
         
         envelope.addEventListener('click', () => {
             envelope.classList.toggle('open');
